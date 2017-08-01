@@ -75,7 +75,7 @@ class ArrayAlg {
 	}
 }
 
-public class PairTest {
+public class PairTest_12 {
 
 	public static void main(String[] args) {
 		ArrayList<Date> dateItems = new ArrayList<Date>() {
