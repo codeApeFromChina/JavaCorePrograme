@@ -49,7 +49,7 @@ class Pair<T> {
 class ArrayAlg {
 	/**
 	 * @Title: min
-	 * @Description: 泛型方法
+	 * @Description: 泛型方法,extend 限制泛型类型
 	 * @param @param a
 	 * @param @return
 	 * @return T
@@ -89,7 +89,28 @@ public class PairTest_12 {
 				add(new Date(2017, 1, 7));
 			}
 		};
+		
+		ArrayList<Double> doubleItems = new ArrayList<Double>(){{
+			add(111d);
+			add(111d);
+			add(111d);
+			add(111d);
+			add(111d);
+		}};
+		
+		ArrayList<Object> objectItems = new ArrayList<Object>(){{
+			add(new Object());
+			add(new Object());
+			add(new Object());
+			add(new Object());
+			add(new Object());
+		}};
+		
 		Pair<Date> pair = ArrayAlg.minMax(dateItems);
+		ArrayAlg.minMax(doubleItems);
+		//ArrayAlg.minMax(objectItems); //error,The inferred type Object is not a valid substitute for
+										//the bounded parameter <T extends Comparable>
+		
 		System.out.println(pair.getFirst());
 		System.out.println(pair.getSecond());
 	}
