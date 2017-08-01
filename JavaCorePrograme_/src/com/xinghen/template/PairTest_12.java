@@ -27,6 +27,7 @@ class Pair<T> {
 		return first;
 	}
 
+
 	public void setFirst(T first) {
 		this.first = first;
 	}
