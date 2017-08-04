@@ -1,7 +1,12 @@
 package com.xinghen.template;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+
+//======================employee and manager test ==========================================
+class Employee {}
+class Manager extends Employee{}
 
 /**
  * @ClassName: Pair
@@ -23,6 +28,15 @@ class Pair<T> {
 		this.second = second;
 	}
 
+	public Boolean equals(T other){
+		
+		if(this.first.equals(other) && this.second.equals(other)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	public T getFirst() {
 		return first;
 	}
@@ -75,9 +89,25 @@ class ArrayAlg {
 	}
 }
 
+class Interval extends Pair<Date>{
+	public Interval (Date t1, Date t2){
+		super.setFirst(t1);
+		super.setSecond(t2);
+	}
+	
+	public Date getSecond(){
+		return super.getSecond();
+	}
+	
+	public void setSecond(Date second){
+		super.setSecond(second);
+	}
+}
+
 public class PairTest_12 {
 
 	public static void main(String[] args) {
+		
 		ArrayList<Date> dateItems = new ArrayList<Date>() {
 			{
 				add(new Date(2017, 1, 1));
@@ -107,12 +137,58 @@ public class PairTest_12 {
 		}};
 		
 		Pair<Date> pair = ArrayAlg.minMax(dateItems);
+		System.out.println(pair.equals(new Date(2017, 1, 1)));
 		ArrayAlg.minMax(doubleItems);
 		//ArrayAlg.minMax(objectItems); //error,The inferred type Object is not a valid substitute for
 										//the bounded parameter <T extends Comparable>
+		Interval i = new Interval(new Date(), new Date());
+		System.out.println(i.getSecond());
+		Pair <Date> p1 = (Pair <Date> )pair;
+		
+		//通用类型不能使用instance 
+		//if(pair instanceof Pair<String>){
+		//	System.out.println(11111);
+		//}
+		
+		//Pair<String>[] p = new Pair<String>[10]; //ERROR ，不能创建参数化类型数组
+		Pair<String>[] p = (Pair<String>[]) new Pair<?>[10]; // 可以使用通用类型，再强转
+		Pair<?>[] p2 = new Pair<?>[10];//或者直接声明称通用类型
+		p2[0] = new Pair<String>();
+		ArrayList<Pair<String>> p3 = new ArrayList<Pair<String>>(); //可以使用集合形式创建参数化数据
+				
+		
+		ArrayList<Pair<Date>> arr = null;
+		Employee [] e = new Employee [10];
+		Manager[] m = new Manager[5];
+		e = m;
+		e [3] = new Manager();
 		
 		System.out.println(pair.getFirst());
 		System.out.println(pair.getSecond());
+		Pair<Manager> ms = new Pair(new Manager(), new Manager());
+		
+		//TODO 此处还存在一些问题，理解不是很透彻
+		Pair<? extends Manager> ms2 = ms;
+		Pair<? super Manager> ms3 = ms;
+//		ms3.setFirst(new Employee());
+		Manager m9 = (Manager) ms3.getFirst();
+//		ms2.setFirst(new Manager());
+		Manager first = ms2.getFirst();
+		
+//		Pair pp2 = pair;
+//		pp2.setFirst(new File(""));
+//		pair.setFirst(new Manager());
+		
+		
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
