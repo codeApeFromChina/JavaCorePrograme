@@ -103,13 +103,20 @@ class BounceFrame extends JFrame {
 		private double dx = 1;
 		private double dy = 1;
 
-		public Ball (){
+		public Ball() {
 			x = Math.random() * 350;
 			y = Math.random() * 450;
-			if(Math.random() * 2 -2 > 0) dx = 1; else dx = -1;
-			if(Math.random() * 2 -2 > 0) dy = 1; else dy = -1;
-			
+			if (Math.random() * 2 - 2 > 0)
+				dx = 1;
+			else
+				dx = -1;
+			if (Math.random() * 2 - 2 > 0)
+				dy = 1;
+			else
+				dy = -1;
+
 		}
+
 		public void move(Rectangle2D rt) {
 			x += dx;
 			y += dy;
@@ -137,22 +144,20 @@ class BounceFrame extends JFrame {
 		public Ellipse2D getShape() {
 			return new Ellipse2D.Double(x, y, XSIZE, YSIZE);
 		}
-
 	}
-
 }
 
 class BallRunnable implements Runnable {
 	private Ball ball;
 	private BallComponent comp;
-	private static final int STEPS = 1000;
+	private static final int STEPS = 10000;
 	private static final int DELAY = 3;
-	
-	public BallRunnable (Ball ball, BallComponent comp) {
+
+	public BallRunnable(Ball ball, BallComponent comp) {
 		this.ball = ball;
 		this.comp = comp;
 	}
-	
+
 	@Override
 	public void run() {
 		try {
