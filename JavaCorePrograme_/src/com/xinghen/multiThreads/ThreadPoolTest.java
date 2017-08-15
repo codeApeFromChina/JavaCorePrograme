@@ -5,38 +5,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 /**
-* @ClassName: MatchCounter
+* @ClassName: MatchCounter   使用线程池版本
 * @Description: callbale and future ,   callbale 和runnable类似，执行完成之后返回结果。
 * 				future 为，线程执行任务，然后忘记任务，直到任务执行完成，get（）阻塞，直到执行完成
 * 				futureTask 为future和callable的包装器
 * @author 赵志强
 * @date 2017年8月14日 下午5:08:11
 */ 
-public class MatchCounter implements Callable<Integer> {
+public class ThreadPoolTest implements Callable<Integer> {
 	private File directory;
 	private String keyWord;
 	private int count;
+	private ExecutorService pool;
 	
 	public static void main(String[] args) {
 		String directory = "G:/ttttt";
 		String keyWord = "tttt";
-		MatchCounter mtcc = new MatchCounter(new File(directory), keyWord);
-		FutureTask<Integer> task = new FutureTask<Integer>(mtcc);
-		Thread t = new Thread(task);
-		t.start();
+		ExecutorService pool = Executors.newCachedThreadPool(); //线程池
+		ThreadPoolTest mtcc = new ThreadPoolTest(new File(directory), keyWord, pool);
+		Future<Integer> result = pool.submit(mtcc);
+//		Thread t = new Thread(task);
+//		t.start();
 		try{
-			System.out.println(task.get());
+			System.out.println(result.get());
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+		pool.shutdown();
 	}
 
-	public MatchCounter(File directory, String keyWord) {
+	public ThreadPoolTest(File directory, String keyWord, ExecutorService pool) {
 		super();
+		this.pool = pool;
 		this.directory = directory;
 		this.keyWord = keyWord;
 	}
@@ -49,11 +55,12 @@ public class MatchCounter implements Callable<Integer> {
 			List<Future<Integer>> results = new ArrayList<Future<Integer>>();
 			for (File file : files) {
 				if (file.isDirectory()) {
-					MatchCounter counter = new MatchCounter(file, keyWord);
+					ThreadPoolTest counter = new ThreadPoolTest(file, keyWord, pool);
 					FutureTask<Integer> task = new FutureTask<Integer>(counter);
+					pool.submit(task);
 					results.add(task);
-					Thread t = new Thread(task);
-					t.start();
+//					Thread t = new Thread(task);
+//					t.start();
 				} else {
 					if (search(file))
 						count++;
